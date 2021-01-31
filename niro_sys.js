@@ -855,6 +855,8 @@ client.on("message", (msg) => {
     let help = new Discord.MessageEmbed()
       .setThumbnail(msg.member.user.avatarURL({ format: "gif", format: "png", dynamic: true, size: 1024 }))
       .setAuthor("Bot Orders")
+      .setTitle("Click Here To Create A Bot Like This")
+      .setURL("https://github.com/NIR0-V/ULTRA-VERSION-OF-N-SYSTEM.git")
       .addField(prefix + `admin`, `Admin Commands`, true)
       .addField(prefix + `public`, `Public Commands`, true)
       .addField(prefix + `music`, `Music Commands`, true)
@@ -1604,71 +1606,61 @@ client.on('message', msg => {
   }
 })
 // <!-- Credits & Daily & Trans --!> \\
-client.on("message", msg => {
-  if (msg.content.startsWith(prefix + "credits")) {
-    if (msg.author.bot) return;
-    if (msg.channel.type == "dm") return msg.channel.send(new Discord.MessageEmbed().setColor("RED").setDescription(error + ` **You Can't Use This Command In DM's!**`).setFooter(`Request By ${msg.author.tag}`).setTimestamp())
-
-    let user = msg.mentions.users.first() || msg.author;
+client.on("message", async niro =>{
+  if(niro.content.startsWith(prefix + "credits")){
+ let user = niro.mentions.users.first() || niro.author;
     let bal = db.fetch(`money_${user.id}`)
     if (bal === null) bal = 0;
-    return 
-                  if (cooldown_command.has(msg.author.id)) {
-            msg.reply(new Discord.MessageEmbed().setDescription(`**${msg.author.username},  Cooldown : 12 seconds**`))
+      {
+                              if (cooldown_command.has(niro.author.id)) {
+            niro.reply(new Discord.MessageEmbed().setDescription(`**${niro.author.username},  Cooldown : 5 seconds**`))
         } else {
-    msg.channel.send(new Discord.MessageEmbed().setDescription(`:bank: | **${user.username} , your account balance is** \`\`$${bal}\`\`.`))
-                cooldown_command.add(msg.author.id);
+       niro.channel.send(`:bank: | **${user.username} , your account balance is** \`\`$${bal}\`\`.`)
+                                    cooldown_command.add(niro.author.id);
             setTimeout(() => {
-                cooldown_command.delete(msg.author.id);
-            }, 15000)
+                cooldown_command.delete(niro.author.id);
+            }, 5000)
         }
-  }
+}}
 });
-client.on("message", async msg => {
-  if (msg.content.startsWith(prefix + "daily")) {
-    if (msg.author.bot) return;
-    if (msg.channel.type == "dm") return msg.channel.send(new Discord.MessageEmbed().setColor("RED").setDescription(error + ` **You Can't Use This Command In DM's!**`).setFooter(`Request By ${msg.author.tag}`).setTimestamp())
-
-    let timeout = 86400000 / 2
-    let amount = Math.floor(Math.random() * 1000) + 1;
-    let daily = await db.fetch(`daily_${msg.author.id}`);
+const ms = require('parse-ms')
+client.on("message", async niro =>{
+if(niro.content.startsWith(prefix + "daily")){
+    let timeout = 86400000/2 //by Ashour
+  let amount = Math.floor(Math.random() * 1000) + 1;
+    let daily = await db.fetch(`daily_${niro.author.id}`);
     if (daily !== null && timeout - (Date.now() - daily) > 0) {
-      let time = ms(timeout - (Date.now() - daily));
-      msg.channel.send(new Discord.MessageEmbed().setDescription(`:rolling_eyes: **| ${msg.author.username}, your daily credits refreshes in ${time.hours}h ${time.minutes}m ${time.seconds}s .** `))
+        let time = ms(timeout - (Date.now() - daily));
+        niro.channel.send(`:rolling_eyes: **| ${niro.author.username}, your daily credits refreshes in ${time.hours}h ${time.minutes}m ${time.seconds}s .** `)
     } else {
-      msg.channel.send(new Discord.MessageEmbed().setDescription(`:moneybag: **${msg.author.username}, you got :dollar: ${amount} daily credits!**`))
-      db.add(`money_${msg.author.id}`, amount)
-      db.set(`daily_${msg.author.id}`, Date.now())
-    }
-  }
-});
-client.on("message", async msg => {
-  if (msg.content.startsWith(prefix + "trans")) {
-    if (msg.author.bot) return;
-    if (msg.channel.type == "dm") return msg.channel.send(new Discord.MessageEmbed().setColor("RED").setDescription(error + ` **You Can't Use This Command In DM's!**`).setFooter(`Request By ${msg.author.tag}`).setTimestamp())
-    let args = msg.content.split(" ").slice(2);
-    let user = msg.mentions.members.first()
-    let member = db.fetch(`money_${msg.author.id}`)
+    niro.channel.send(`:moneybag: **${niro.author.username}, you got :dollar: ${amount} daily credits!**`)
+    db.add(`money_${niro.author.id}`, amount)
+    db.set(`daily_${niro.author.id}`, Date.now())
+    }}});
+client.on("message", async niro =>{
+  if(niro.content.startsWith(prefix + "trans")){
+    let args = niro.content.split(" ").slice(2); 
+    let user = niro.mentions.members.first() 
+    let member = db.fetch(`money_${niro.author.id}`)
     if (!user) {
-      return msg.channel.send(new Discord.MessageEmbed().setDescription(`:rolling_eyes: | ** ${msg.author.username}, I Cant Find a User**`))
+        return niro.channel.send(`:rolling_eyes: | ** ${niro.author.username}, I Cant Find a User**`)
     }
     if (!args) {
-      return msg.channel.send(new Discord.MessageEmbed().setDescription(`:rolling_eyes: | **${msg.author.username}, type the credit you need to transfer!**`))
+        return niro.channel.send(`:rolling_eyes: | **${niro.author.username}, type the credit you need to transfer!**`)
     }
-    if (msg.content.includes('-')) {
-      return msg.channel.send(new Discord.MessageEmbed().setDescription(`:rolling_eyes: | **${msg.author.username}, Type a Amount \`Not Negative\`**`))
+    if (niro.content.includes('-')) { 
+      return niro.channel.send(`:rolling_eyes: | **${niro.author.username}, Type a Amount \`Not Negative\`**`)
     }
     if (member < args) {
-      return msg.channel.send(new Discord.MessageEmbed().setDescription(`:thinking: ** | ${msg.author.username}, Your balance is not enough for that!**`))
+        return niro.channel.send(`:thinking: ** | ${niro.author.username}, Your balance is not enough for that!**`)
     }
-    if (isNaN(args))
-      return msg.channel.send(`:rolling_eyes: Numbers Only`)
-    msg.channel.send(new Discord.MessageEmbed().setDescription(`:moneybag: **| ${msg.author.username}, has transferred \`$${args}\` to ${user}**`))
-    user.send(`:atm:  |  Transfer Receipt \n\`\`\`You have received $${args} from user ${msg.author.username} (ID: ${user.id})\`\`\``)
+    if(isNaN(args)) 
+return niro.channel.send(`:rolling_eyes: Numbers Only`)
+    niro.channel.send(`:moneybag: **| ${niro.author.username}, has transferred \`$${args}\` to ${user}**`)
+    user.send(`:atm:  |  Transfer Receipt \n\`\`\`You have received $${args} from user ${niro.author.username} (ID: ${user.id})\`\`\``)
     db.add(`money_${user.id}`, args)
-    db.subtract(`money_${msg.author.id}`, args)
-  }
-});
+    db.subtract(`money_${niro.author.id}`, args)
+}});
 
 client.on("message", msg => {
   if (msg.content.startsWith(prefix + "help credits") || msg.content.startsWith(prefix + "help daily") || msg.content.startsWith(prefix + "help trans")) {
