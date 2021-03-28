@@ -12,7 +12,7 @@ module.exports = async(client) => {
 > Bot Ping: ${client.ws.ping} XD
 > Prefix: ${client.config.bot.setting.main_prefix}
 > Developer: @ニロ#3892
-> Support: https://discord.gg/
+> Support: https://discord.gg/YJ6mUdgTsc
 =====================================`))
 
     client.user.setActivity(client.config.bot.setting.main_prefix + "help");
