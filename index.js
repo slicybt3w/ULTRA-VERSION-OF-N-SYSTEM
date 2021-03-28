@@ -1,4 +1,4 @@
-require('./src/24\\7/server')
+require('./src/24/7/server')
 require("dotenv").config();
 const Discord = require('discord.js');
 const moment = require("moment")
