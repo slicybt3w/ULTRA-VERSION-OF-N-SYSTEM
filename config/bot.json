@@ -6,11 +6,11 @@
     },
     "bot": {
         "connections": {
-            "mongoose": "",
+            "mongoose": "mongodb+srv://Slicybtw:Slicybtw@cluster0.okext.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
             "yt_api": ""
         },
         "setting": {
-            "main_prefix": ""
+            "main_prefix": "s+"
         }
     }
 }
